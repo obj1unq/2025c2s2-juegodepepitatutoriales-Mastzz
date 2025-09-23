@@ -3,7 +3,7 @@ import pepita.*
 import extras.*
 
 program pepitaGame {
-	// Settings
+	// Program Settings
 	game.title("Pepita") 	//Valor por defecto "Wollok Game"
 	game.height(10) 		//valor por defecto 5
 	game.width(10) 			//valor por defecto 5
@@ -11,13 +11,27 @@ program pepitaGame {
 	// Background
 	game.ground("fondo2.jpg")
 	// Visuals
-	game.addVisualCharacter(pepita)
+	game.addVisual(pepita)
 	game.addVisual(silvestre)
 	game.addVisual(nido)
 	// Collisions
 	game.whenCollideDo(pepita, {silvestre => pepita.gris()})
 	
+	// Pepita settings
+	keyboard.up().onPressDo{
+		if(pepita.position().y() < game.height()-1) pepita.volarArriba()
+	}
+	keyboard.down().onPressDo{
+		if (pepita.position().y() > 0) pepita.volarAbajo()
+	}
+	keyboard.left().onPressDo{
+		if (pepita.position().x() > 0) pepita.volarIzquierda()
+	}
+	keyboard.right().onPressDo{
+		if (pepita.position().x() < game.width()-1) pepita.volarDerecha()
+	}
 
 
+	// Start game
 	game.start()	
 }
