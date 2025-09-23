@@ -31,6 +31,8 @@ program pepitaGame {
 		if (pepita.position().x() < game.width()-1) pepita.volarDerecha()
 	}
 
+	// Events
+	game.onTick(800, "gravedad", {=> pepita.caeGravedad()})
 
 	// Start game
 	game.start()	

@@ -6,7 +6,6 @@ object silvestre {
     return "silvestre.png"
   }
   method position() {
-    //return game.at(pepita.position().x(), 0)
      return if (pepita.position().x() < 3) game.at(3, 0) else game.at(pepita.position().x(), 0)
   }
 }
@@ -15,6 +14,5 @@ object nido {
   method image() {
     return "nido.png"
   }
-}
 
 

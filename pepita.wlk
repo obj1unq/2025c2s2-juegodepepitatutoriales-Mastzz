@@ -47,6 +47,11 @@ object pepita {
 			self.volar(1)
 		}
 	}
+	method caeGravedad() {
+	//   const x = position.x()
+	//   const y = position.y()-1
+	  position = game.at(position.x(),position.y()-1)
+	}
 
 	method gris() {
 	  image = "pepita-gris.png"
