@@ -1,60 +1,72 @@
-object pepita {
-	var energia = 500
-	var property position = game.center()
-	var property image = "pepita.png"
+import wollok.game.*
+import direcciones.*
+import extras.*
 
-	method position(){
-		if (energia <= 0){
-			image = "pepita-gris.png"
-			return position
-		}
-		return position
+
+object pepita {
+	var property position = game.at(0,1)
+	var energia = 500
+	const joules = 9
+	const depredador = silvestre
+	const hogar = nido
+
+	method image(){
+		return "pepita-" + self.estado() + ".png"
+	}
+	method estado(){
+		return if (!self.puedeMover()){"gris"}
+				else if (self.enHogar()){"grande"}
+				else {"base"}
+	}
+	method energiaNecesaria(kms){return joules * kms}
+
+	method volar(kms) {
+		energia -= self.energiaNecesaria(kms)
 	}
 
 	method comer(comida) {
-		energia = energia + comida.energiaQueOtorga()
+		energia += comida.energiaQueOtorga()
 	}
 
-	method volar(kms) {
-		energia = energia - 10 - kms 
-	}
-	
 	method energia() {
 		return energia
 	}
-	// Movements
-	method volarArriba(){
-		if (energia >= 0){
-			position = position.up(1)
-			self.volar(1)
-		}
+	method puedeMover(){
+		return energia >= self.energiaNecesaria(1) && not self.esAtrapada()
 	}
-	method volarAbajo(){
-		if (energia >= 0){
-			position = position.down(1)
-			self.volar(1)
-		}
+	method esAtrapada(){
+		return self.estaSobre(depredador)
 	}
-	method volarDerecha() {
-		if (energia >= 0){
-			position = position.right(1)
-			self.volar(1)
-		}
+	method estaSobre(alguien){
+		return position == alguien.position()
 	}
-	method volarIzquierda() {
-		if (energia >= 0){
-			position = position.left(1)
-			self.volar(1)
-		}
+	method enHogar(){ return self.estaSobre(hogar)}
+	
+	method meChoqueCon(alguien){
+		alguien.meToco(alguien)
+	}
+	method mover(direccion) {
+	  if(self.puedeMover()){
+		self.volar(1)
+		position = direccion.siguiente(position)
+	  }
+	  else{
+		self.perder()
+	  }
+	}
+	
+	method perder(){
+		game.say(self, "Perdi!")
+		game.schedule(2000, {game.stop()})
+	}
+
+	method ganar(){
+		game.say(self, "Gane!")
+		game.schedule(2000, {game.stop()})
 	}
 	method caeGravedad() {
-	//   const x = position.x()
-	//   const y = position.y()-1
 	  position = game.at(position.x(),position.y()-1)
 	}
 
-	method gris() {
-	  image = "pepita-gris.png"
-	}
 }
 

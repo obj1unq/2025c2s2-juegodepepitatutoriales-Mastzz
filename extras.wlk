@@ -1,18 +1,26 @@
+import wollok.game.*
 import pepita.*
+object nido {
+  const property position = game.at(8, 8)
 
-object silvestre {
-  var property position = game.at(3, 0)
-  method image() {
-    return "silvestre.png"
-  }
-  method position() {
-     return if (pepita.position().x() < 3) game.at(3, 0) else game.at(pepita.position().x(), 0)
+  method image() {return "nido.png"}
+
+  method meToco(alguien) {
+    alguien.ganar()
   }
 }
-object nido {
-  var property position = game.at(4, 9)
-  method image() {
-    return "nido.png"
-  }
+
+object silvestre {
+  const presa = pepita
+
+  method image() {return "silvestre.png"}
+  
+  method position(){ return game.at(self.x(), 0)}
+
+  method x(){return 3.max(presa.position().x())}
+
+  method meToco(alguien){ alguien.perder()}
+}
+
 
 

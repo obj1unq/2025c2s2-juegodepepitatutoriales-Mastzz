@@ -1,6 +1,8 @@
 import wollok.game.*
 import pepita.*
 import extras.*
+import direcciones.*
+
 
 program pepitaGame {
 	// Program Settings
@@ -9,30 +11,22 @@ program pepitaGame {
 	game.width(10) 			//valor por defecto 5
 	game.cellSize(50) 		//valor por defecto 50
 	// Background
-	game.ground("fondo2.jpg")
+	game.boardGround("fondo2.jpg")
 	// Visuals
-	game.addVisual(pepita)
-	game.addVisual(silvestre)
 	game.addVisual(nido)
-	// Collisions
-	game.whenCollideDo(pepita, {silvestre => pepita.gris()})
+	game.addVisual(silvestre)
+
+	game.addVisual(pepita)
+	keyboard.up().onPressDo({pepita.mover(arriba)})
+	keyboard.right().onPressDo({pepita.mover(derecha)})
+	keyboard.down().onPressDo({pepita.mover(abajo)})
+	keyboard.left().onPressDo({pepita.mover(izquierda)})
+
 	
-	// Pepita settings
-	keyboard.up().onPressDo{
-		if(pepita.position().y() < game.height()-1) pepita.volarArriba()
-	}
-	keyboard.down().onPressDo{
-		if (pepita.position().y() > 0) pepita.volarAbajo()
-	}
-	keyboard.left().onPressDo{
-		if (pepita.position().x() > 0) pepita.volarIzquierda()
-	}
-	keyboard.right().onPressDo{
-		if (pepita.position().x() < game.width()-1) pepita.volarDerecha()
-	}
+	game.whenCollideDo(pepita, {alguien => pepita.meChoqueCon(alguien)})
 
 	// Events
-	game.onTick(800, "gravedad", {=> pepita.caeGravedad()})
+	//game.onTick(800, "gravedad", {=> pepita.caeGravedad()})
 
 	// Start game
 	game.start()	
